@@ -6,10 +6,11 @@ const loginRouter = require("./Router/loginRouter");
 const postRouter = require("./Router/postRouter");
 const getRouter = require("./Router/getRouter");
 const deleteRouter = require("./Router/deleteRouter");
+const updateRouter = require("./Router/updateRouter");
 const cors = require("cors");
 const multer = require("multer");
 const app = express();
-
+const { Authanticate } = require("./authenticate");
 app.use(bodyParser.json());
 app.use(cors({ origin: "*" }));
 
@@ -27,16 +28,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.listen(3000, () => console.log("server start at 3000"));
+app.listen(process.env.PORT, () => console.log("server start at 3000"));
 
 // db("SELECT * FROM dynamicform").then(result=>{
 //     console.log(result)
 // })
 
 app.use("/", loginRouter);
-app.use("/", postRouter);
-app.use("/", getRouter);
-app.use("/", deleteRouter);
+app.use("/", Authanticate, postRouter);
+app.use("/", Authanticate, getRouter);
+app.use("/", Authanticate, deleteRouter);
+app.use("/", Authanticate, updateRouter);
 
 app.post("/upload", upload.single("file"), async (req, res) => {
   const fileBuffer = req.file.buffer;

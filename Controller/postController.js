@@ -504,6 +504,62 @@ const addreport = (req, res) => {
     .catch((err) => console.log(err));
 };
 
+const addService = (req, res) => {
+  try {
+    var camp_name = req.body.camp_name;
+    var camp_type = req.body.camp_type;
+    var camp_did = req.body.camp_did;
+    var PacingSet = req.body.PacingSet;
+    var hold = req.body.hold;
+    var waraptime = req.body.waraptime;
+    var trunkType = req.body.trunkType;
+    var sticky = req.body.sticky;
+    var ivr_status = req.body.ivr_status;
+    var CRMURL = req.body.CRMURL;
+
+    var query = `INSERT INTO campaign(camp_name,camp_type,camp_did,PacingSet,hold,waraptime,trunkType,sticky,ivr_status,CRMURL) VALUES('${camp_name}','${camp_type}','${camp_did}','${PacingSet}',${hold},${waraptime},${trunkType},${sticky},${ivr_status},'${CRMURL}')`;
+    db(query)
+      .then((result) => {
+        res.status(200).json({
+          message: "Service Added Sucessfully",
+        });
+      })
+      .catch((err) => console.log(err));
+
+    var didStatus = `UPDATE did_allocation
+    SET status = 1,campaign_name='${camp_name}'
+    WHERE did_id=${camp_did}`;
+    db(didStatus)
+      .then((result) => {
+        console.log("did update done");
+      })
+      .catch((err) => console.log(err));
+
+    var musiconhold = `INSERT INTO musiconhold(name,mode,directory) VALUES('${camp_name}','files','/uploads')`;
+    db(musiconhold)
+      .then((result) => {
+        console.log("musiconhold done");
+      })
+      .catch((err) => console.log(err));
+
+    var svrTime = `INSERT INTO srvtime(ServiceName,CampaignName,DiD,camptype,StartTime,EndTime,waraptime,PacingSet) VALUES('${camp_name}','${camp_name}','${camp_did}','${camp_type}','00:00:01','23:59:59',${waraptime},'${PacingSet}')`;
+    db(svrTime)
+      .then((result) => {
+        console.log("svrtime done");
+      })
+      .catch((err) => console.log(err));
+
+    var queue = `INSERT INTO queues(name,musiconhold,monitor_format,strategy,ringinuse) VALUES('${camp_name}','${camp_name}','wav','rrmemory','no')`;
+    db(queue)
+      .then((result) => {
+        console.log("queue done");
+      })
+      .catch((err) => console.log(err));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   addDynamicForm,
   addtl,
@@ -513,4 +569,5 @@ module.exports = {
   addagent,
   addreport,
   addDropdown,
+  addService,
 };

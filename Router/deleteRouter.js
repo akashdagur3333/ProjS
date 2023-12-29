@@ -11,4 +11,6 @@ route.delete("/did/:id", deleteController.deletedid);
 route.delete("/agent/:id", deleteController.deleteagent);
 route.delete("/report/:id", deleteController.deletereport);
 route.delete("/disposition/:id", deleteController.deleteDisposition);
+route.delete("/service/:id", deleteController.deleteService);
+
 module.exports = route;

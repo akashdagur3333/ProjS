@@ -10,5 +10,6 @@ route.post("/did", postController.adddid);
 route.post("/agent", postController.addagent);
 route.post("/report", postController.addreport);
 route.post("/dropdown", postController.addDropdown);
+route.post("/service", postController.addService);
 
 module.exports = route;

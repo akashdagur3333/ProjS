@@ -79,6 +79,15 @@ const getdisposition = (req, res) => {
     .catch((err) => console.log(err));
 };
 
+const getService = (req, res) => {
+  var query = "SELECT * FROM campaign";
+  db(query)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => console.log(err));
+};
+
 const getLiveAgent = (req, res) => {
   var query = `SELECT
   agent_info.employee_code AS EmployeeCode,
@@ -154,4 +163,5 @@ module.exports = {
   getDropdown,
   getdisposition,
   getLiveAgent,
+  getService,
 };

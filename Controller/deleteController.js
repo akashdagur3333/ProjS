@@ -105,6 +105,22 @@ const deleteDisposition = (req, res) => {
     })
     .catch((err) => console.log(err));
 };
+
+const deleteService = (req, res) => {
+  try {
+    const id = req.params.id;
+    var query = `DELETE FROM campaign WHERE c_id=${id}`;
+    db(query)
+      .then((result) => {
+        res.status(200).json({
+          message: "Campaign Deleted Sucessfully",
+        });
+      })
+      .catch((err) => console.log(err));
+  } catch (err) {
+    console.log(err);
+  }
+};
 module.exports = {
   deleteDynamicForm,
   deletetl,
@@ -115,4 +131,5 @@ module.exports = {
   deletereport,
   deleteDropdown,
   deleteDisposition,
+  deleteService,
 };

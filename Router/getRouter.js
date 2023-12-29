@@ -12,4 +12,5 @@ route.get("/agent", getController.getagent);
 route.get("/report", getController.getreport);
 route.get("/disposition", getController.getdisposition);
 route.get("/liveagent", getController.getLiveAgent);
+route.get("/service", getController.getService);
 module.exports = route;
